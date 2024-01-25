@@ -10,6 +10,7 @@ import jakarta.persistence.Query;
 @Repository
 public class EstudianteRepositoryImpl implements IEstudianteRepository{
 
+	
 	private EntityManager entityManager;
 	@Override
 	public void insertar(Estudiante estudiante) {
