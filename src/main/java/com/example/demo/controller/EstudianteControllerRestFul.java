@@ -1,20 +1,34 @@
 package com.example.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.modelo.Estudiante;
-
-/*
- * Una API puede tener mucho servicios
- * API: por el proyecto 
- */
-
-//Servicio -> Controller: clase controller 
+import com.example.demo.service.IEstudianteService;
+ 
 @RestController //Servicio
+@RequestMapping(path = "/estudiantes")
 public class EstudianteControllerRestFul {
 
+	@Autowired
+	private IEstudianteService estudianteService;
+	
 	//Metodos: capacidades
-	public void guardar(Estudiante estudiante) {
-		
+	// GET
+	@GetMapping(path = "/buscar")
+	public Estudiante buscar() {
+		return estudianteService.buscar(1);
 	}
+	//http://localhost:8080/API/v1.0/Matricula/estudiantes/buscar
+	
+	@PostMapping(path = "/guardar")
+	public void guardar(@RequestBody Estudiante estudiante) {
+		this.estudianteService.guardar(estudiante);
+	}
+	
+	
 }
