@@ -31,7 +31,7 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository{
 	public void actualizarParcial(String nombre, String apellido, Integer id) {
 		// TODO Auto-generated method stub
 		// SQL: UPDATE estudiante e SET e.estu_nombre=: valor, e.estu_apellido=: valor2 WHERE e.estu_id := valor3
-		Query query = this.entityManager.createQuery("UPDATE estudiante e SET e.nombre=:valor1, e.apellido=:valor2 WHERE e.id=:valor3");
+		Query query = this.entityManager.createQuery("UPDATE Estudiante e SET e.nombre = :valor1, e.apellido = :valor2 WHERE e.id=:valor3");
 		
 		query.setParameter("valor1", nombre);
 		query.setParameter("valor2", apellido);
