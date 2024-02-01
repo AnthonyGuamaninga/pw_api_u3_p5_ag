@@ -1,5 +1,8 @@
 package com.example.demo.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.repository.modelo.Estudiante;
@@ -7,6 +10,7 @@ import com.example.demo.repository.modelo.Estudiante;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 @Repository
@@ -50,6 +54,14 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository{
 	public void eliminar(Integer id) {
 		// TODO Auto-generated method stub
 		this.entityManager.remove(this.seleccionar(id));
+	}
+
+	@Override
+	public List<Estudiante> buscarEstudiantes(String genero) {
+		// TODO Auto-generated method stub
+		TypedQuery<Estudiante> query = this.entityManager.createQuery("SELECT e FROM Estudiante e WHERE e.genero= :valor1", Estudiante.class);
+		query.setParameter("valor1", genero);
+		return query.getResultList();
 	}
 	
 	//CRUD -> Create, Read, Update, Delete 
