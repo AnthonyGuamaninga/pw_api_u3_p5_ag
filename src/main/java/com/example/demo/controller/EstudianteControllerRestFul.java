@@ -29,28 +29,29 @@ public class EstudianteControllerRestFul {
 	// en la url ->  /buscar/4/Daniel
 	// en el path -> /buscar/{id}/{nombre}
 	// en el metodo -> @PathVariable: @PathVariable (Integer id, @PathVariable String nombre) 
-	@GetMapping(path = "/buscar/{id}")
+	@GetMapping(path = "/{id}")
 	public Estudiante buscar(@PathVariable Integer id) {
 		return estudianteService.buscar(id);
 	}
 	//http://localhost:8080/API/v1.0/Matricula/estudiantes/buscar
 	
-	@PostMapping(path = "/guardar")
+	@PostMapping
 	public void guardar(@RequestBody Estudiante estudiante) {
 		this.estudianteService.guardar(estudiante);
 	}
 	
-	@PutMapping(path = "/actualizar")
-	public void actualizar(@RequestBody Estudiante estudiante) {
+	@PutMapping(path = "/{id}")
+	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
+		estudiante.setId(id);
 		this.estudianteService.actualizar(estudiante);
 	}
 	
-	@PatchMapping(path = "/actualizarParcial")
-	public void actualizarParcial(@RequestBody Estudiante estudiante) {
-		this.estudianteService.actualizarParcial(estudiante.getNombre(), estudiante.getApellido(), estudiante.getId());
+	@PatchMapping(path = "/{id}")
+	public void actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
+		this.estudianteService.actualizarParcial(estudiante.getNombre(), estudiante.getApellido(), id);
 	}
 	
-	@DeleteMapping(path = "/borrar/{id}")
+	@DeleteMapping(path = "/{id}")
 	public void borrar(@PathVariable Integer id) {
 		this.estudianteService.borrar(id);
 	}
@@ -61,8 +62,8 @@ public class EstudianteControllerRestFul {
 	// en la url -> /consultarTodos?genero=M&edad=100
 	// en el path -> esta no cambia
 	// en el metodo -> (@RequestParam String genero, @RequesParam Integer edad)
-	@GetMapping(path = "/consultarTodos")
-	public List<Estudiante> consultarTodos(@RequestParam String genero){
+	@GetMapping
+	public List<Estudiante> consultarTodos(@RequestParam(required = false, defaultValue = "M") String genero){
 		return this.estudianteService.obtenerEstudiantes(genero);
 	}
 	
