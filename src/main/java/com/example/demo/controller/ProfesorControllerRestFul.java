@@ -25,33 +25,35 @@ public class ProfesorControllerRestFul {
 	@Autowired
 	private IProfesorService profesorService;
 	
-	@PostMapping(path = "/ingresar")
+	@PostMapping
 	public void ingresar(@RequestBody Profesor profesor) {
 		this.profesorService.ingresar(profesor);
 	}
 	
-	@PutMapping(path = "/actualizar")
-	public void actualizar(@RequestBody Profesor profesor) {
+	@PutMapping(path = "/{id}")
+	public void actualizar(@RequestBody Profesor profesor, @PathVariable Integer id) {
+		profesor.setId(id);
 		this.profesorService.modificar(profesor);
 	}
 	
-	@GetMapping(path = "/buscar/{id}")
+	@GetMapping(path = "/{id}")
 	public Profesor buscar(@PathVariable Integer id) {
 		return this.profesorService.buscar(id);
 	}
 	
-	@DeleteMapping(path = "/borrar/{id}")
+	@DeleteMapping(path = "/{id}")
 	public void borrar(@PathVariable Integer id) {
 		this.profesorService.borrar(id);
 	}
 	
-	@PatchMapping("/modificarParcial")
-	public void modificarNacionalidadSueldo(@RequestBody Profesor profesor) {
-		this.profesorService.modificarParcial(profesor.getNacionalidad(), profesor.getSueldo(), profesor.getId());
+	@PatchMapping(path = "/{id}")
+	public void modificarNacionalidadSueldo(@RequestBody Profesor profesor, @PathVariable Integer id) {
+		profesor.setId(id);
+		this.profesorService.modificarParcial(profesor.getNacionalidad(), profesor.getSueldo(), id);
 	}
 	
-	@GetMapping(path = "/obtenerPorApellidos")
-	public List<Profesor> obtenerPorApellido(@RequestParam String apellido) {
+	@GetMapping
+	public List<Profesor> obtenerTodosOPorApellido(@RequestParam(required = false, defaultValue = "Castro") String apellido) {
 		return this.profesorService.buscarPorApellido(apellido);
 	}
 	
