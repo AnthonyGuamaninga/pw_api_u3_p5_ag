@@ -50,14 +50,14 @@ public class EstudianteControllerRestFul {
 		this.estudianteService.guardar(estudiante);
 	}
 	
-	@PutMapping(path = "/{id}")
+	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
 		estudiante.setId(id);
 		this.estudianteService.actualizar(estudiante);
 	}
 	
 	
-	@PatchMapping(path = "/{id}")
+	@PatchMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
 		this.estudianteService.actualizarParcial(estudiante.getNombre(), estudiante.getApellido(), id);
 	}
