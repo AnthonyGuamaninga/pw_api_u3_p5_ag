@@ -3,6 +3,10 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,13 +33,19 @@ public class EstudianteControllerRestFul {
 	// en la url ->  /buscar/4/Daniel
 	// en el path -> /buscar/{id}/{nombre}
 	// en el metodo -> @PathVariable: @PathVariable (Integer id, @PathVariable String nombre) 
-	@GetMapping(path = "/{id}")
-	public Estudiante buscar(@PathVariable Integer id) {
-		return estudianteService.buscar(id);
+	
+	@GetMapping(path = "/{id}", produces = "application/json")
+	public ResponseEntity<Estudiante> buscar(@PathVariable Integer id) {
+		// 240: grupo satisfactorio
+		// 240: Recurso Estudiante encontrado satisfactoriamente 
+		Estudiante estu = estudianteService.buscar(id);
+		
+	
+		return ResponseEntity.status(HttpStatus.OK).body(estu);
 	}
 	//http://localhost:8080/API/v1.0/Matricula/estudiantes/buscar
 	
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE)
 	public void guardar(@RequestBody Estudiante estudiante) {
 		this.estudianteService.guardar(estudiante);
 	}
@@ -45,6 +55,7 @@ public class EstudianteControllerRestFul {
 		estudiante.setId(id);
 		this.estudianteService.actualizar(estudiante);
 	}
+	
 	
 	@PatchMapping(path = "/{id}")
 	public void actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
@@ -62,9 +73,13 @@ public class EstudianteControllerRestFul {
 	// en la url -> /consultarTodos?genero=M&edad=100
 	// en el path -> esta no cambia
 	// en el metodo -> (@RequestParam String genero, @RequesParam Integer edad)
-	@GetMapping
-	public List<Estudiante> consultarTodos(@RequestParam(required = false, defaultValue = "M") String genero){
-		return this.estudianteService.obtenerEstudiantes(genero);
+	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+	public ResponseEntity<List<Estudiante>> consultarTodos(@RequestParam(required = false, defaultValue = "M") String genero){
+		List<Estudiante> lista = this.estudianteService.obtenerEstudiantes(genero); 
+		HttpHeaders cabeceras =new HttpHeaders(); 
+		cabeceras.add("mensaje_242", "Lista consultada de manera satisfactoria");
+		cabeceras.add("mensaje_info", "El sistema va estar en mantenimiento el fin de semana");
+		return new ResponseEntity<>(lista, cabeceras, 242);
 	}
 	
 }
