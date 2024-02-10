@@ -75,4 +75,10 @@ public class EstudianteServiceImpl implements IEstudianteService{
 		return estuTO;
 	}
 
+	@Override
+	public EstudianteTO buscarTO(Integer id) {
+		// TODO Auto-generated method stub
+		return this.convertir(this.estudianteRepository.seleccionar(id));
+	}
+
 }

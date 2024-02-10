@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +25,10 @@ import com.example.demo.service.IMateriaService;
 import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;
 
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController // Servicio
 @RequestMapping(path = "/estudiantes")
 public class EstudianteControllerRestFul {
@@ -42,11 +47,16 @@ public class EstudianteControllerRestFul {
 	// String nombre)
 
 	@GetMapping(path = "/{id}", produces = "application/json")
-	public ResponseEntity<Estudiante> buscar(@PathVariable Integer id) {
+	public ResponseEntity<EstudianteTO> buscar(@PathVariable Integer id) {
 		// 240: grupo satisfactorio
 		// 240: Recurso Estudiante encontrado satisfactoriamente
-		Estudiante estu = estudianteService.buscar(id);
-
+		EstudianteTO estu = this.estudianteService.buscarTO(id);
+		Link link =linkTo(methodOn(EstudianteControllerRestFul.class).consultarMateriasPorId(estu.getId()))
+				.withRel("susMaterias");
+		Link link2 =linkTo(methodOn(EstudianteControllerRestFul.class).consultarMateriasPorId(estu.getId()))
+				.withSelfRel();
+		estu.add(link);
+		estu.add(link2);
 		return ResponseEntity.status(HttpStatus.OK).body(estu);
 	}
 
@@ -66,11 +76,16 @@ public class EstudianteControllerRestFul {
 		return new ResponseEntity<>(lista, cabeceras, 242);
 	}
 
-	// 
+	// http://localhost:8080/API/v1.0/Matricula/estudiantes/11/materias
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EstudianteTO>> consultarTodosHateoas() {
 		List<EstudianteTO> lista = this.estudianteService.buscarTodosTO();
 		
+		for(EstudianteTO est : lista) {
+			Link link =linkTo(methodOn(EstudianteControllerRestFul.class).consultarMateriasPorId(est.getId()))
+					.withRel("susMaterias");
+			est.add(link);
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(lista);
 	}
 	
@@ -80,7 +95,7 @@ public class EstudianteControllerRestFul {
 		return ResponseEntity.status(HttpStatus.OK).body(lista); 
 	}
 
-	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void guardar(@RequestBody Estudiante estudiante) {
 		this.estudianteService.guardar(estudiante);
 	}

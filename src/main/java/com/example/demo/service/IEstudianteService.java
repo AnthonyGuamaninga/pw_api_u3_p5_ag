@@ -12,6 +12,7 @@ public interface IEstudianteService {
 	public void actualizar(Estudiante estudiante);
 	public void actualizarParcial(String nombre, String apellido, Integer id);
 	public Estudiante buscar(Integer id);
+	public EstudianteTO buscarTO(Integer id);
 	public void borrar(Integer id);
 	
 	public List<Estudiante> obtenerEstudiantes(String genero);
