@@ -37,8 +37,29 @@ public class Estudiante {
 	@Column(name = "estu_fecha_nacimiento")
 	private LocalDateTime fechaNacimiento;
 
+	@Column(name = "estu_hobby")
+	private String hobby;
+	
+	@Column(name = "estu_pais")
+	private String pais;
+	
+	@Column(name = "estu_direccion")
+	private String direccion;
+	
+	@Column(name = "estu_tipo_estudiante")
+	private String tipoEstudiante;
+	
+	@Column(name = "estu_carrera")
+	private String carrera;
+	
+	@Column(name = "estu_tipo_sangre")
+	private String tipoSangre;
+	
+	
 	@OneToMany(mappedBy = "estudiante")
 	private List<Materia> materias;
+	
+	
 	
 	
 	// SET Y GET
@@ -88,6 +109,54 @@ public class Estudiante {
 
 	public void setMaterias(List<Materia> materias) {
 		this.materias = materias;
+	}
+
+	public String getHobby() {
+		return hobby;
+	}
+
+	public void setHobby(String hobby) {
+		this.hobby = hobby;
+	}
+
+	public String getPais() {
+		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getTipoEstudiante() {
+		return tipoEstudiante;
+	}
+
+	public void setTipoEstudiante(String tipoEstudiante) {
+		this.tipoEstudiante = tipoEstudiante;
+	}
+
+	public String getCarrera() {
+		return carrera;
+	}
+
+	public void setCarrera(String carrera) {
+		this.carrera = carrera;
+	}
+
+	public String getTipoSangre() {
+		return tipoSangre;
+	}
+
+	public void setTipoSangre(String tipoSangre) {
+		this.tipoSangre = tipoSangre;
 	}
 
 	

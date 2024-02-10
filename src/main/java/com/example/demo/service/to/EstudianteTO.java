@@ -18,6 +18,12 @@ public class EstudianteTO extends RepresentationModel<EstudianteTO> implements S
 	private String apellido;
 	private String genero;
 	private LocalDateTime fechaNacimiento;
+	private String hobby;
+	private String pais;
+	private String direccion;
+	private String tipoEstudiante;
+	private String carrera;
+	private String tipoSangre;
 	
 	
 	//SET Y GET
@@ -50,6 +56,42 @@ public class EstudianteTO extends RepresentationModel<EstudianteTO> implements S
 	}
 	public void setFechaNacimiento(LocalDateTime fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+	public String getHobby() {
+		return hobby;
+	}
+	public void setHobby(String hobby) {
+		this.hobby = hobby;
+	}
+	public String getPais() {
+		return pais;
+	}
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+	public String getDireccion() {
+		return direccion;
+	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+	public String getTipoEstudiante() {
+		return tipoEstudiante;
+	}
+	public void setTipoEstudiante(String tipoEstudiante) {
+		this.tipoEstudiante = tipoEstudiante;
+	}
+	public String getCarrera() {
+		return carrera;
+	}
+	public void setCarrera(String carrera) {
+		this.carrera = carrera;
+	}
+	public String getTipoSangre() {
+		return tipoSangre;
+	}
+	public void setTipoSangre(String tipoSangre) {
+		this.tipoSangre = tipoSangre;
 	}
 	
 	

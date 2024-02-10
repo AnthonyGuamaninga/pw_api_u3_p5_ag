@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.IEstudianteRepository;
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.service.dto.EstudianteLigeroTO;
 import com.example.demo.service.to.EstudianteTO;
 
 
@@ -74,11 +75,25 @@ public class EstudianteServiceImpl implements IEstudianteService{
 		estuTO.setNombre(estu.getNombre());
 		return estuTO;
 	}
+	
+	private EstudianteLigeroTO convertirLigero(Estudiante estu) {
+		EstudianteLigeroTO estuLigero = new EstudianteLigeroTO();
+		estuLigero.setId(estu.getId());
+		estuLigero.setApellido(estu.getApellido());
+		estuLigero.setNombre(estu.getNombre());
+		return estuLigero;
+	} 
 
 	@Override
 	public EstudianteTO buscarTO(Integer id) {
 		// TODO Auto-generated method stub
 		return this.convertir(this.estudianteRepository.seleccionar(id));
+	}
+
+	@Override
+	public EstudianteLigeroTO buscarLigeroTO(Integer id) {
+		// TODO Auto-generated method stub
+		return this.convertirLigero(this.estudianteRepository.seleccionar(id));
 	}
 
 }

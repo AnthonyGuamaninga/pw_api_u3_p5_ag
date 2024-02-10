@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.service.IEstudianteService;
 import com.example.demo.service.IMateriaService;
+import com.example.demo.service.dto.EstudianteLigeroTO;
 import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;
 
@@ -38,26 +39,33 @@ public class EstudianteControllerRestFul {
 	
 	@Autowired
 	private IMateriaService iMateriaService;
-
-	// Metodos: capacidades
-	// GET
-	// en la url -> /buscar/4/Daniel
-	// en el path -> /buscar/{id}/{nombre}
-	// en el metodo -> @PathVariable: @PathVariable (Integer id, @PathVariable
-	// String nombre)
-
-	@GetMapping(path = "/{id}", produces = "application/json")
+	/*
+	 *Metodos: capacidades
+	 *GET
+	 *en la url -> /buscar/4/Daniel
+	 *en el path -> /buscar/{id}/{nombre}
+	 *en el metodo -> @PathVariable: @PathVariable (Integer id, @PathVariable String nombre) 
+	 */
+	@GetMapping(path = "/{id}/completo", produces = "application/json")
 	public ResponseEntity<EstudianteTO> buscar(@PathVariable Integer id) {
-		// 240: grupo satisfactorio
-		// 240: Recurso Estudiante encontrado satisfactoriamente
+		
 		EstudianteTO estu = this.estudianteService.buscarTO(id);
 		Link link =linkTo(methodOn(EstudianteControllerRestFul.class).consultarMateriasPorId(estu.getId()))
 				.withRel("susMaterias");
-		Link link2 =linkTo(methodOn(EstudianteControllerRestFul.class).consultarMateriasPorId(estu.getId()))
-				.withSelfRel();
+		/*
+		 * Link link2 =linkTo(methodOn(EstudianteControllerRestFul.class).buscar(estu.getId())).withSelfRel();
+		 */
+				
 		estu.add(link);
-		estu.add(link2);
 		return ResponseEntity.status(HttpStatus.OK).body(estu);
+	}
+	
+	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	private ResponseEntity<EstudianteLigeroTO> buscarLigero(@PathVariable Integer id){
+		EstudianteLigeroTO estuLigero = this.estudianteService.buscarLigeroTO(id);
+		Link link = linkTo(methodOn(EstudianteControllerRestFul.class).buscar(id)).withSelfRel();
+		estuLigero.add(link);
+		return ResponseEntity.status(HttpStatus.OK).body(estuLigero);
 	}
 
 	// capacidad que permita consultar una lista de estudiantes
