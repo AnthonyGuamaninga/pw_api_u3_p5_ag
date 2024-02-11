@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.service.IEstudianteService;
 import com.example.demo.service.IMateriaService;
 import com.example.demo.service.dto.EstudianteLigeroTO;
@@ -51,11 +50,7 @@ public class EstudianteControllerRestFul {
 		
 		EstudianteTO estu = this.estudianteService.buscarTO(id);
 		Link link =linkTo(methodOn(EstudianteControllerRestFul.class).consultarMateriasPorId(estu.getId()))
-				.withRel("susMaterias");
-		/*
-		 * Link link2 =linkTo(methodOn(EstudianteControllerRestFul.class).buscar(estu.getId())).withSelfRel();
-		 */
-				
+				.withRel("susMaterias");				
 		estu.add(link);
 		return ResponseEntity.status(HttpStatus.OK).body(estu);
 	}
@@ -68,28 +63,13 @@ public class EstudianteControllerRestFul {
 		return ResponseEntity.status(HttpStatus.OK).body(estuLigero);
 	}
 
-	// capacidad que permita consultar una lista de estudiantes
-	// http://localhost:8080/API/v1.0/Matricula/estudiantes
-	// Cuando se tienen mas de un requesParam se lo debe separa con una &
-	// en la url -> /consultarTodos?genero=M&edad=100
-	// en el path -> esta no cambia
-	// en el metodo -> (@RequestParam String genero, @RequesParam Integer edad)
-	@GetMapping(path = "/tmp",produces = MediaType.APPLICATION_XML_VALUE)
-	public ResponseEntity<List<Estudiante>> consultarTodos(
-			@RequestParam(required = false, defaultValue = "M") String genero) {
-		List<Estudiante> lista = this.estudianteService.obtenerEstudiantes(genero);
-		HttpHeaders cabeceras = new HttpHeaders();
-		cabeceras.add("mensaje_242", "Lista consultada de manera satisfactoria");
-		cabeceras.add("mensaje_info", "El sistema va estar en mantenimiento el fin de semana");
-		return new ResponseEntity<>(lista, cabeceras, 242);
-	}
 
 	// http://localhost:8080/API/v1.0/Matricula/estudiantes/11/materias
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<EstudianteTO>> consultarTodosHateoas() {
-		List<EstudianteTO> lista = this.estudianteService.buscarTodosTO();
+	public ResponseEntity<List<EstudianteLigeroTO>> consultarTodosHateoas() {
+		List<EstudianteLigeroTO> lista = this.estudianteService.buscarTodosLigeroTO();
 		
-		for(EstudianteTO est : lista) {
+		for(EstudianteLigeroTO est : lista) {
 			Link link =linkTo(methodOn(EstudianteControllerRestFul.class).consultarMateriasPorId(est.getId()))
 					.withRel("susMaterias");
 			est.add(link);
@@ -104,24 +84,28 @@ public class EstudianteControllerRestFul {
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void guardar(@RequestBody Estudiante estudiante) {
+	public ResponseEntity<String> guardar(@RequestBody EstudianteTO estudiante) {
 		this.estudianteService.guardar(estudiante);
+		return ResponseEntity.status(HttpStatus.OK).body("Estudiante "+estudiante.getApellido()+" insertado con exito!");
 	}
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
+	public ResponseEntity<String> actualizar(@RequestBody EstudianteTO estudiante, @PathVariable Integer id) {
 		estudiante.setId(id);
 		this.estudianteService.actualizar(estudiante);
+		return ResponseEntity.status(HttpStatus.OK).body("Estudiante "+id+" actualizado exitosamente");
 	}
 
 	@PatchMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
+	public ResponseEntity<String> actualizarParcial(@RequestBody EstudianteTO estudiante, @PathVariable Integer id) {
 		this.estudianteService.actualizarParcial(estudiante.getNombre(), estudiante.getApellido(), id);
+		return ResponseEntity.status(HttpStatus.OK).body("Estudiante "+id+" actualizado parcialmete de forma exitosa");
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public void borrar(@PathVariable Integer id) {
+	public ResponseEntity<String> borrar(@PathVariable Integer id) {
 		this.estudianteService.borrar(id);
+		return ResponseEntity.status(HttpStatus.OK).body("El estudiante "+id+" ha sido eliminado");
 	}
 
 }

@@ -9,16 +9,14 @@ import com.example.demo.service.to.EstudianteTO;
 
 public interface IEstudianteService {
 
-	public void guardar(Estudiante estudiante);
-	public void actualizar(Estudiante estudiante);
+	public void guardar(EstudianteTO estudiante);
+	public void actualizar(EstudianteTO estudiante);
 	public void actualizarParcial(String nombre, String apellido, Integer id);
-	public Estudiante buscar(Integer id);
+	
 	public EstudianteTO buscarTO(Integer id);
 	public EstudianteLigeroTO buscarLigeroTO(Integer id);
 	public void borrar(Integer id);
 	
-	public List<Estudiante> obtenerEstudiantes(String genero);
-	
-	public List<EstudianteTO> buscarTodosTO();
+	public List<EstudianteLigeroTO> buscarTodosLigeroTO();
 	
 }
