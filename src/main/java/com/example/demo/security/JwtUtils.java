@@ -2,6 +2,8 @@ package com.example.demo.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
@@ -10,6 +12,8 @@ import io.jsonwebtoken.Jwts;
 public class JwtUtils {
 
 	private static final Logger LOG = LoggerFactory.getLogger(JwtUtils.class);
+	//@Value("${app.jwtSemilla}")
+	//private String jwtSemilla;
 
 	public boolean validateJwtToken(String authToken) {
 		try {
